@@ -1,4 +1,4 @@
--- ESTE SCRIPT SOLO SE EJECUTA 1 VEZ
+-- ESTE S-- ESTE SCRIPT SOLO SE EJECUTA 1 VEZ
 CREATE DATABASE IF NOT EXISTS DOTA_DB;
 USE DOTA_DB;
 
@@ -44,22 +44,13 @@ CREATE INDEX idx_match_start_time ON Matches(Start_time);
 CREATE INDEX idx_match_players_account ON Match_Players(Account_id);
 CREATE INDEX idx_match_players_hero ON Match_Players(Hero_id);
 
+-- Añadimos una columna para la "key" que usaremos para las imágenes
+ALTER TABLE Heroes ADD COLUMN Image_Key VARCHAR(100);
 
-SELECT * FROM Match_Players;
-
-
-SELECT * FROM Heroes LIMIT 10;
-
-
-
-
-
-
-
-
-
-
-
+-- Limpiamos los nombres para obtener solo el nombre del héroe (ej: 'ringmaster')
+-- Esto quita el prefijo 'npc_dota_hero_'
+UPDATE Heroes 
+SET Image_Key = REPLACE(Name, 'npc_dota_hero_', '');
 
 
 
