@@ -40,6 +40,22 @@ FOREIGN KEY (Account_id) REFERENCES Players(Account_id),
 FOREIGN KEY (Hero_id) REFERENCES Heroes(Hero_id)
 );
 
+CREATE TABLE Match_Players_Detail (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Match_id BIGINT,
+    Account_id BIGINT,
+    net_worth INT,
+    hero_damage INT,
+    tower_damage INT,
+    hero_healing INT,
+    gold_per_min INT,
+    xp_per_min INT,
+    FOREIGN KEY (Match_id) REFERENCES Matches(Match_id),
+    FOREIGN KEY (Account_id) REFERENCES Players(Account_id),
+    INDEX idx_detail_account (Account_id),
+    INDEX idx_detail_match (Match_id)
+);
+
 CREATE INDEX idx_match_start_time ON Matches(Start_time);
 CREATE INDEX idx_match_players_account ON Match_Players(Account_id);
 CREATE INDEX idx_match_players_hero ON Match_Players(Hero_id);
@@ -52,7 +68,13 @@ ALTER TABLE Heroes ADD COLUMN Image_Key VARCHAR(100);
 UPDATE Heroes 
 SET Image_Key = REPLACE(Name, 'npc_dota_hero_', '');
 
+-- 1. Agregar player_slot a Match_Players
+ALTER TABLE Match_Players 
+ADD COLUMN player_slot INT;
 
+-- 2. Agregar net_worth para calcular MVP (el que más net_worth tuvo)
+ALTER TABLE Match_Players 
+ADD COLUMN net_worth INT;
 
 
 
